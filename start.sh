@@ -1,3 +1,4 @@
 #! /bin/sh
 
-(cd auth && ./auth &)
+cd auth
+./auth &
