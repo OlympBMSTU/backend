@@ -1,3 +1,6 @@
 #! /bin/sh
 
-./auth/auth
+ROOT_DIR="`pwd`"
+
+cd $ROOT_DIR/auth/
+./auth
