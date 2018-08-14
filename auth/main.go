@@ -3,7 +3,7 @@ import (
   "net/http"
 )
 func ping(w http.ResponseWriter, r *http.Request) {
-  w.Write([]byte("pongFinFin2"))
+  w.Write([]byte("pongFinFin3"))
 }
 func main() {
   http.Handle("/", http.FileServer(http.Dir("./static")))
