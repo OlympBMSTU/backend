@@ -1,3 +1,3 @@
 #! /bin/sh
 
-(cd /auth && exec ./auth &)
+(cd auth && exec ./auth &)
