@@ -1,3 +1,3 @@
 #! /bin/sh
 
-(cd auth && exec npm istall)
+(cd auth && exec npm install)
