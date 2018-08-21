@@ -1,3 +1,3 @@
 #! /bin/sh
 
-(cd auth && exec go build)
+(cd auth && exec npm istall)
