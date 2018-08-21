@@ -8,7 +8,7 @@ const config = {
     app: {
       name: 'auth-serv'
     },
-    port: process.env.PORT || 3004,
+    port: process.env.PORT || 3001,
     db: {
 			username: "postgres",
 			password: "1",
@@ -24,7 +24,7 @@ const config = {
     app: {
       name: 'auth-serv'
     },
-    port: process.env.PORT || 3004,
+    port: process.env.PORT || 3001,
 	db: {
 			username: "postgres",
 			password: "1",
@@ -40,7 +40,7 @@ const config = {
     app: {
       name: 'auth-serv'
     },
-    port: process.env.PORT || 3004,
+    port: process.env.PORT || 3001,
     db: {
 			username: "postgres",
 			password: "1",
