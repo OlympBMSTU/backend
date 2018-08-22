@@ -10,9 +10,9 @@ const config = {
     },
     port: process.env.PORT || 3001,
     db: {
-			username: "postgres",
-			password: "1",
-			database: "auth-serv",
+			username: "auth",
+			password: "a1u7t5h6",
+			database: "auth_db",
 			host: "127.0.0.1",
 			port: "5432",
 			dialect: "postgres"
@@ -26,9 +26,9 @@ const config = {
     },
     port: process.env.PORT || 3001,
 	db: {
-			username: "postgres",
-			password: "1",
-			database: "auth-serv",
+		  username: "auth",
+			password: "a1u7t5h6",
+			database: "auth_db",
 			host: "127.0.0.1",
 			port: "5432",
 			dialect: "postgres"
@@ -42,9 +42,9 @@ const config = {
     },
     port: process.env.PORT || 3001,
     db: {
-			username: "postgres",
-			password: "1",
-			database: "auth-serv",
+			username: "auth",
+			password: "a1u7t5h6",
+			database: "auth_db",
 			host: "127.0.0.1",
 			port: "5432",
 			dialect: "postgres"
