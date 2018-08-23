@@ -34,8 +34,16 @@ router.post('/register', (req, res, next) => {
 	let password = req.body.password;
 	let email = req.body.email;
 
+	db.Account.createAccount(login, password, email, function (err, account) {
+		if (!err) {
+			res.status(200).send({registered: login});
+		} else if (err == "NOT UNIQUE") {
+			res.status(200).send({error: "NOT UNIQUE", notUnique: account});
+		} else {
+			res.status(200).send({error: err});
+		}
+	});
 
-	res.status(200).send({registered: login});
 });
 
 router.get('/auth', (req, res, next) => {

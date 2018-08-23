@@ -5,11 +5,32 @@ module.exports = (sequelize, DataTypes) => {
 
 	const Account = sequelize.define('Account', {
 		login: DataTypes.STRING,
-		password: DataTypes.STRING
+		password: DataTypes.STRING,
+		email: DataTypes.STRING
 	});
 	
 	Account.hashedPassword = function (password) {
 		return crypto.createHmac('sha256', hashSecret).update(password).digest("hex");
+	}
+	
+	Account.createAccount = function (login, password, email, callback) {
+		this.findOrCreate({where: {[Op.or]: [
+			{ login: login },
+			{ email: email }
+		  ]}, defaults: {password: Account.hashedPassword(password)}})
+  		.spread((user, created) => {
+			if (created) {
+				callback(null, user);
+			} else {
+				let notUnique = 0;
+				if (user.login == login) notUnique = notUnique + 1;
+				if (user.email == email) notUnique = notUnique - 1;
+
+				callback("NOT UNIQUE", notUnique);
+			}
+		}).catch(function (err) {
+			callback(err, null);
+		});
 	}
 	
 	Account.findAccountAndCheckPassword = function (login, password, callback) {
