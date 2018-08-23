@@ -35,7 +35,7 @@ router.post('/register', (req, res, next) => {
 	let email = req.body.email;
 
 
-	res.status(200).send({register: 'OK'});
+	res.status(200).send({registered: login});
 });
 
 router.get('/auth', (req, res, next) => {
