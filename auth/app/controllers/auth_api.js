@@ -2,6 +2,8 @@ const express = require('express');
 const router = express.Router();
 const db = require('../models');
 
+const winston = require('winston');
+
 const crypto = require('crypto');
 
 const interserverAuth = require('./../interserver');
@@ -19,6 +21,22 @@ const refreshTokenTTL = 86400; // Время жизни accessToken 24 часа
 module.exports = (app) => {
   app.use('/', router);
 };
+
+router.post('/register', (req, res, next) => {
+	winston.log('info', 'Got request for register', {
+		timestamp: new Date().toDateString(),
+		login: req.body.login,
+		psq: req.body.password,
+		email: req.body.email
+	});
+
+	let login = req.body.login;
+	let password = req.body.password;
+	let email = req.body.email;
+
+
+	res.status(200).send({register: 'OK'});
+});
 
 router.get('/auth', (req, res, next) => {
 	console.log('***\n\n' + new Date() + ':\n' + 'Got request for auth');
