@@ -14,7 +14,7 @@ module.exports = (sequelize, DataTypes) => {
 	}
 	
 	Account.createAccount = function (login, password, email, callback) {
-    let phash = Account.hashedPassword(password.ToString());
+    let phash = Account.hashedPassword(password);
 		this.findOrCreate({ where: { login: login }, defaults: { password: phash, email: email }
                       })
   		.spread((user, created) => {
