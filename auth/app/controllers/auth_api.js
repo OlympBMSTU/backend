@@ -24,7 +24,7 @@ module.exports = (app) => {
 
 router.post('/register', (req, res, next) => {
 	winston.log('info', 'Got request for register', {
-		timestamp: new Date().toDateString(),
+		timestamp: new Date(),
 		login: req.body.login,
 		psq: req.body.password,
 		email: req.body.email
