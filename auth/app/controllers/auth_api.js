@@ -33,7 +33,7 @@ router.post('/register', (req, res, next) => {
 	let login = req.body.login;
 	let password = req.body.password;
 	let email = req.body.email;
-
+  console.log(login + '-' + password + '-' + email + '-')
 	db.Account.createAccount(login, password, email, function (err, account) {
 		if (!err) {
 			res.status(200).send({registered: login});
