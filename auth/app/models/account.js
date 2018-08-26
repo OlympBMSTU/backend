@@ -14,10 +14,8 @@ module.exports = (sequelize, DataTypes) => {
 	}
 	
 	Account.createAccount = function (login, password, email, callback) {
-		this.findOrCreate({where: {[Op.or]: [
-			{ login: login },
-			{ email: email }
-		  ]}, defaults: {password: Account.hashedPassword(password)}})
+		this.findOrCreate({ where: { login: login }, defaults: { password: Account.hashedPassword(password), email: email }
+                      })
   		.spread((user, created) => {
 			if (created) {
 				callback(null, user);
