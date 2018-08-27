@@ -1,4 +1,6 @@
 const crypto = require('crypto');
+const Op = Sequelize.Op;
+
 const hashSecret = '21477 61225 37 7836 29 2364? 32 575 784 9383.';
 
 module.exports = (sequelize, DataTypes) => {
@@ -15,7 +17,7 @@ module.exports = (sequelize, DataTypes) => {
 	
 	Account.createAccount = function (login, password, email, callback) {
     let phash = Account.hashedPassword(password);
-		this.findOrCreate({ where: { login: login }, defaults: { password: phash, email: email }
+		this.findOrCreate({ where: { [Op.or]: [{login: login}, {email: email}] }, defaults: { password: phash, email: email }
                       })
   		.spread((user, created) => {
 			if (created) {
