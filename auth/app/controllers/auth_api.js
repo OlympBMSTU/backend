@@ -23,6 +23,7 @@ module.exports = (app) => {
 };
 
 router.post('/register', (req, res, next) => {
+	console.log(req.body);
 	winston.log('info', 'Got request for register', {
 		timestamp: new Date(),
 		login: req.body.login,
@@ -31,16 +32,22 @@ router.post('/register', (req, res, next) => {
 	});
 
 	let login = req.body.login;
+	if (typeof(login) == 'undefined') return res.status(200).send({res_code: "INVALID", res_data: "login", res_msg: "Заполните все поля"});
+
 	let password = req.body.password;
+	if (typeof(password) == 'undefined') return res.status(200).send({res_code: "INVALID", res_data: "password", res_msg: "Заполните все поля"});
+
 	let email = req.body.email;
-  console.log(login + '-' + password + '-' + email + '-')
+	if (typeof(email) == 'undefined') return res.status(200).send({res_code: "INVALID", res_data: "email", res_msg: "Заполните все поля"});
+
 	db.Account.createAccount(login, password, email, function (err, account) {
+		console.log(err.name);
 		if (!err) {
-			res.status(200).send({registered: login});
-		} else if (err == "NOT UNIQUE") {
-			res.status(200).send({error: "NOT UNIQUE", notUnique: account});
+			res.status(200).send({res_code: "OK", res_data: login, res_msg: "Вы успешно зарегистрированны"} );
+		} else if (err.name == "SequelizeUniqueConstraintError") {
+			res.status(200).send( {res_code: "NOT_UNIQUE", res_data: "", res_msg: "Пользователь с таким логином или почтой уже существует"} );
 		} else {
-			res.status(200).send({error: err});
+			res.status(500).send( {res_code: "INTERNAL_ERROR", res_data: "", res_msg: "Произошла внутренняя ошибка"} );
 		}
 	});
 

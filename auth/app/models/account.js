@@ -7,10 +7,12 @@ const hashSecret = '21477 61225 37 7836 29 2364? 32 575 784 9383.';
 module.exports = (sequelize, DataTypes) => {
 
 	const Account = sequelize.define('Account', {
-		login: DataTypes.STRING,
-		password: DataTypes.STRING,
-		email: DataTypes.STRING
-	});
+		login: { type: DataTypes.STRING, unique: true },
+		password: { type: DataTypes.STRING },
+		email: { type: DataTypes.STRING, unique: true },
+		type: { type: DataTypes.INTEGER, defaultValue: 0 },
+		isFull: { type: DataTypes.BOOLEAN, defaultValue: false },
+	},{ timestamps: false });
 	
 	Account.hashedPassword = function (password) {
 		return crypto.createHmac('sha256', hashSecret).update(password).digest("hex");
@@ -18,18 +20,14 @@ module.exports = (sequelize, DataTypes) => {
 	
 	Account.createAccount = function (login, password, email, callback) {
     let phash = Account.hashedPassword(password);
-		this.findOrCreate({ where: { [Op.or]: [{login: login}, {email: email}] }, defaults: { password: phash, email: email }
-                      })
-  		.spread((user, created) => {
-			if (created) {
-				callback(null, user);
-			} else {
-				let notUnique = 0;
-				if (user.login == login) notUnique = notUnique + 1;
-				if (user.email == email) notUnique = notUnique - 1;
-
-				callback("NOT UNIQUE", notUnique);
-			}
+		this.create({
+			login: login, 
+			email: email, 
+			password: phash, 
+			type: 0,
+			isFull: false		  
+		}).then((account) => {
+			callback(null, account);
 		}).catch(function (err) {
 			callback(err, null);
 		});
