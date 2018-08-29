@@ -14,7 +14,12 @@ winston.configure({
 
 const app = express();
 app.use(function(req, res, next) {
-	res.header("Access-Control-Allow-Origin", "http://80.87.193.245, http://127.0.0.1");
+  let allow = "http://80.87.193.245";
+  if (req.get("Origin") == "http://127.0.0.1") {
+    allow = "http://127.0.0.1";
+  }
+  
+	res.header("Access-Control-Allow-Origin", allow);
 	res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept, Authorization");
 	res.header("Access-Control-Allow-Methods", "GET, POST, HEAD, OPTIONS, PUT, DELETE, PATCH")
 	next();
