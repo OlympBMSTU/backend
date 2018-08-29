@@ -41,7 +41,7 @@ router.post('/register', (req, res, next) => {
 	if (typeof(email) == 'undefined') return res.status(200).send({res_code: "INVALID", res_data: "email", res_msg: "Заполните все поля"});
 
 	db.Account.createAccount(login, password, email, function (err, account) {
-		console.log(err.name);
+		console.log(err);
 		if (!err) {
 			res.status(200).send({res_code: "OK", res_data: login, res_msg: "Вы успешно зарегистрированны"} );
 		} else if (err.name == "SequelizeUniqueConstraintError") {
