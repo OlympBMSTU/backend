@@ -37,18 +37,31 @@ module.exports = (sequelize, DataTypes) => {
 		this.findOne(
 		{
 			where: { login: login },
-			attributes: ['id','login','password'],
+			attributes: ['id','login','password','type'],
 			rejectOnEmpty: true
 		}
 		).then((user) => {
 			if (Account.hashedPassword(password) === user.password) {
 				callback(null, user);
 			} else {
-				throw ('Incorrect password');
+				throw ({name: 'IncorrectPasswordError'});
 			}
 		}).catch(function (err) {
 			callback(err, null);
 		});
+	}
+
+	Account.getInfo = function (id) {
+		this.findById(id,
+			{
+				attributes: ['login','email','type'],
+				rejectOnEmpty: true
+			}
+		).then((account) => {
+			callback(null, account);
+		}).catch(function (err) {
+			callback(err, null);
+		});	
 	}
 	
 	return Account;

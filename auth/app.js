@@ -4,19 +4,14 @@ const express = require('express');
 const config = require('./config/config');
 const db = require('./app/models');
 
-const winston = require('winston');
-
-winston.configure({
-  transports: [
-    new winston.transports.File({ filename: 'app.log' })
-  ]
-});
-
 const app = express();
+
 app.use(function(req, res, next) {
   let allow = "http://80.87.193.245";
   if (req.get("Origin") == "http://127.0.0.1") {
     allow = "http://127.0.0.1";
+  } else if (req.get("Origin") == "http://chs-polygon.website") {
+    allow = "http://chs-polygon.website";
   }
   
 	res.header("Access-Control-Allow-Origin", allow);
@@ -34,9 +29,6 @@ db.sequelize
     if (!module.parent) {
       app.listen(config.port, () => {
         console.log('Express server listening on port ' + config.port);
-        winston.log('info', 'Express server listening on port ' + config.port, {
-          timestamp: new Date().toDateString()
-        })
       });
     }
   }).catch((e) => {

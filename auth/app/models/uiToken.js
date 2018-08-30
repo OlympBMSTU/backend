@@ -22,6 +22,18 @@ module.exports = (sequelize, DataTypes) => {
 			callback(err, null);
 		});
 	}
+
+	UIToken.findTokenById = function (id, callback) {
+		this.findById(id,
+		{
+			rejectOnEmpty: true
+		}
+		).then((token) => {
+			callback(null, token);
+		}).catch(function (err) {
+			callback(err, null);
+		});
+	}
 	
 	UIToken.updateLastUsed = function (token, callback) {
 		this.update(
