@@ -1,6 +1,6 @@
 const crypto = require('crypto');
 
-const tokenTimeToLive = 84600000;
+const tokenTimeToLive = 84600;
 const hashSecret = 'a1u7t5h6';
 const iss = 'auth.olimp.bmstu.ru'
 const sub = 'olimp.bmstu.ru'
@@ -68,6 +68,7 @@ module.exports = {
 		} 
 
 		let testSignature = crypto.createHmac('sha256', hashSecret).update(headerAndPayload).digest("hex");
+		testSignature = Buffer(testSignature).toString('base64');
 
 		if (testSignature != signature) {
 			console.log('t: ', testSignature, '\ns: ', signature);
