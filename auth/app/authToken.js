@@ -70,6 +70,7 @@ module.exports = {
 		let testSignature = crypto.createHmac('sha256', hashSecret).update(headerAndPayload).digest("hex");
 
 		if (testSignature != signature) {
+			console.log('t: ', testSignature, '\ns: ', signature);
 			return {res: "INVALID_SIGNATURE", jwt: resJWT};
 		}
 
