@@ -52,15 +52,14 @@ module.exports = (sequelize, DataTypes) => {
 	}
 
 	Account.getInfo = function (id, callback) {
-		this.findOne(
+		this.findById(id,
 			{
-				where: { id: id },
 				attributes: ['login','email','type'],
 				rejectOnEmpty: true
 			}
-		).then((acc) => {
-			console.log('db', acc);
-			callback(null, acc);
+		).then((account) => {
+			console.log('db', account);
+			callback(null, account);
 		}).catch(function (err) {
 			callback(err, null);
 		});	
