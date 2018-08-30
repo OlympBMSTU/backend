@@ -76,7 +76,7 @@ router.get('/infome', (req, res, next) => {
 	let id = jwtFromToken.jwt.id;
 
 	db.Account.getInfo(id, function (err, account) {
-		console.log(err);
+		console.log(account);
 		if (!err) {
 			return res.status(200).send({res_code: "OK", res_data: account, res_msg: "Краткая информация об аккаунте"} );
 		} else if (err.name === 'SequelizeEmptyResultError') {
