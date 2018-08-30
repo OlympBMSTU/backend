@@ -73,8 +73,8 @@ router.get('/infome', (req, res, next) => {
 
 	if (jwtFromToken.res != 'OK') return res.status(401).send( {res_code: "INVALID_TOKEN", res_data: jwtFromToken.res, res_msg: "Неверные данные авторизации"} );
 	console.log('decodedJWT', jwtFromToken.jwt);
-	
-	let id = jwtFromToken.jwt.id;
+
+	let id = jwtFromToken.jwt.payload.id;
 
 	db.Account.getInfo(id, function (err, account) {
 		console.log(account);
