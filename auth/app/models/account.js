@@ -58,6 +58,7 @@ module.exports = (sequelize, DataTypes) => {
 				rejectOnEmpty: true
 			}
 		).then((account) => {
+			console.log('db', account);
 			callback(null, account);
 		}).catch(function (err) {
 			callback(err, null);
