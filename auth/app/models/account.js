@@ -57,9 +57,9 @@ module.exports = (sequelize, DataTypes) => {
 				attributes: ['login','email','type'],
 				rejectOnEmpty: true
 			}
-		).then((account) => {
-			console.log('db', account);
-			callback(null, account);
+		).then((acc) => {
+			console.log('db', acc);
+			callback(null, acc);
 		}).catch(function (err) {
 			callback(err, null);
 		});	
