@@ -51,7 +51,7 @@ module.exports = (sequelize, DataTypes) => {
 		});
 	}
 
-	Account.getInfo = function (id) {
+	Account.getInfo = function (id, callback) {
 		this.findById(id,
 			{
 				attributes: ['login','email','type'],
