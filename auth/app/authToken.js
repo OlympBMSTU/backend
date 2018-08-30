@@ -32,12 +32,15 @@ module.exports = {
 	},
 
 	decodeJWT: function (jwt) {
+		console.log('jwt', jwt);
+
 		let sections = jwt.split('.');
 		if (sections.length != 3) {
 			return {res: "BAD_SECTIONS_FORMAT"}
 		}
 
 		let headerAndPayload = sections[0] + '.' + sections[1];
+		console.log('headerAndPayload', headerAndPayload);
 
 		let header = new Buffer(sections[0], 'base64').toString('utf8');
 		try {
