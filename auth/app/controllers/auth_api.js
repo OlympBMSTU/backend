@@ -67,7 +67,7 @@ router.get('/info', (req, res, next) => {
 	console.log('info');
 	cookie = req.cookies.auth;
 
-	if (!cookie) return res.status(401).send( {res_code: "INVALID_TOKEN", res_data: cookie, res_msg: "Неверные данные авторизации"} );
+	if (!cookie) return res.status(401).send( {res_code: "NO_TOKEN", res_data: cookie, res_msg: "Вы не авторизованны"} );
 
 	jwtFromToken = authToken.decodeJWT(cookie);
 
