@@ -14,7 +14,8 @@ app.use(function(req, res, next) {
     allow = "http://chs-polygon.website";
   }
   
-	res.header("Access-Control-Allow-Origin", allow);
+  res.header("Access-Control-Allow-Origin", allow);
+  res.header("Access-Control-Allow-Credentials", 'true');
 	res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept, Authorization");
 	res.header("Access-Control-Allow-Methods", "GET, POST, HEAD, OPTIONS, PUT, DELETE, PATCH")
 	next();
