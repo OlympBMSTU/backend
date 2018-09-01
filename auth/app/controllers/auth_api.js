@@ -63,7 +63,7 @@ router.post('/login', (req, res, next) => {
 	});
 });
 
-router.get('/infome', (req, res, next) => {
+router.get('/info', (req, res, next) => {
 	console.log('info');
 	cookie = req.cookies.auth;
 
