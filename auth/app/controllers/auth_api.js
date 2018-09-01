@@ -6,7 +6,6 @@ const crypto = require('crypto');
 const authToken = require('../authToken.js')
 
 const tokenLiveTime = 86400; // время жизни общее токена интерфейса 24 часа
-const inactiveTokenLiveTime = 60; // время жизни неиспользуемого токена интерфейса 60сек
 
 module.exports = (app) => {
   app.use('/', router);
@@ -49,9 +48,6 @@ router.post('/login', (req, res, next) => {
 		console.log(err);
 		if (!err) {
 			let token = authToken.encodeJWT(account.id, account.type);
-
-			res.cookie('auth', token);
-
 			return res.status(200).send({res_code: "OK", res_data: token, res_msg: "Вы успешно авторизованны"} );
 		} else if (err.name === 'SequelizeEmptyResultError') {
 			return res.status(200).send( {res_code: "NOT_FOUND", res_data: "", res_msg: "Пользователь с таким логином не найден"} );
