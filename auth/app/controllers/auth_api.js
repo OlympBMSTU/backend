@@ -24,9 +24,10 @@ router.post('/register', (req, res, next) => {
 	let email = req.body.email;
 	if (!email) return res.status(200).send({res_code: "INVALID", res_data: "email", res_msg: "Заполните все поля"});
 
-	let captcha = req.body.g-recaptcha-response;
+	//let captcha = req.body.g-recaptcha-response;
+	let captcha = '';
 	if (!captcha) {
-		return res.status(200).send({res_code: "INVALID", res_data: "captcha", res_msg: "Заполните все поля"});
+		return res.status(200).send({res_code: "INVALID", res_data: req.body, res_msg: "Заполните все поля"});
 	} else {
 		reCaptcha.check(captcha);
 	}
