@@ -29,20 +29,25 @@ router.post('/register', (req, res, next) => {
 	if (!captcha) {
 		return res.status(200).send({res_code: "INVALID", res_data: req.body, res_msg: "Заполните все поля"});
 	} else {
-		reCaptcha.check(captcha);
+		reCaptcha.check(captcha, function (captchaReqErr, captchaReqRes) {
+			if (captchaReqErr) {
+				return res.status(200).send({res_code: "CAPTCHA_ERROR", res_data: captchaReqErr, res_msg: "Произошла ошибка во время проверки reCaptcha"} );
+			} else if (!captchaReqRes) {
+				return res.status(200).send({res_code: "CAPTCHA_INVALID", res_data: '', res_msg: "reCaptcha не прошла проверку"} );
+			}
+
+			db.Account.createAccount(login, password, email, function (err, account) {
+				console.log(err);
+				if (!err) {
+					return res.status(200).send({res_code: "OK", res_data: login, res_msg: "Вы успешно зарегистрированны"} );
+				} else if (err.name === "SequelizeUniqueConstraintError") {
+					return res.status(200).send( {res_code: "NOT_UNIQUE", res_data: "", res_msg: "Пользователь с таким логином или почтой уже существует"} );
+				} else {
+					return res.status(500).send( {res_code: "INTERNAL_ERROR", res_data: "", res_msg: "Произошла внутренняя ошибка"} );
+				}
+			});
+		});
 	}
-
-	db.Account.createAccount(login, password, email, function (err, account) {
-		console.log(err);
-		if (!err) {
-			return res.status(200).send({res_code: "OK", res_data: login, res_msg: "Вы успешно зарегистрированны"} );
-		} else if (err.name === "SequelizeUniqueConstraintError") {
-			return res.status(200).send( {res_code: "NOT_UNIQUE", res_data: "", res_msg: "Пользователь с таким логином или почтой уже существует"} );
-		} else {
-			return res.status(500).send( {res_code: "INTERNAL_ERROR", res_data: "", res_msg: "Произошла внутренняя ошибка"} );
-		}
-	});
-
 });
 
 router.post('/login', (req, res, next) => {
