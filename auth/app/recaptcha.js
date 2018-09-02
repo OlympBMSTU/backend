@@ -14,7 +14,8 @@ module.exports = {
 				callback(err, null);
 			} else {
 				console.log('response from reCaptcha: ' + body);
-				callback(null, body.success);
+				let res = JSON.parse(body);
+				callback(null, res);
 			}
 		});
 	}
