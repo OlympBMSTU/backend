@@ -1,9 +1,11 @@
+
 const express = require('express');
 const router = express.Router();
 const db = require('../models');
 const crypto = require('crypto');
 
 const authToken = require('../authToken.js')
+const reCaptcha = require('../recaptcha.js')
 
 const tokenLiveTime = 86400; // время жизни общее токена интерфейса 24 часа
 
@@ -21,6 +23,13 @@ router.post('/register', (req, res, next) => {
 
 	let email = req.body.email;
 	if (!email) return res.status(200).send({res_code: "INVALID", res_data: "email", res_msg: "Заполните все поля"});
+
+	let captcha = req.body.g-recaptcha-response;
+	if (!captcha) {
+		return res.status(200).send({res_code: "INVALID", res_data: "captcha", res_msg: "Заполните все поля"});
+	} else {
+		reCaptcha.check(captcha);
+	}
 
 	db.Account.createAccount(login, password, email, function (err, account) {
 		console.log(err);
