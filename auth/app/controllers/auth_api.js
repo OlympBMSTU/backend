@@ -15,6 +15,7 @@ module.exports = (app) => {
 
 router.post('/register', (req, res, next) => {
 
+	/*
 	let login = req.body.login;
 	if (!login) return res.status(200).send({res_code: "INVALID", res_data: "login", res_msg: "Заполните все поля"});
 
@@ -29,6 +30,7 @@ router.post('/register', (req, res, next) => {
 	if (!captcha) {
 		return res.status(200).send({res_code: "INVALID", res_data: req.body, res_msg: "Заполните все поля"});
 	} else {
+		*/
 		reCaptcha.check(captcha, function (captchaReqErr, captchaReqRes) {
 			if (captchaReqErr) {
 				return res.status(200).send({res_code: "CAPTCHA_ERROR", res_data: captchaReqErr, res_msg: "Произошла ошибка во время проверки reCaptcha"} );
@@ -48,7 +50,7 @@ router.post('/register', (req, res, next) => {
 				}
 			});
 		});
-	}
+	//}
 });
 
 router.post('/login', (req, res, next) => {
