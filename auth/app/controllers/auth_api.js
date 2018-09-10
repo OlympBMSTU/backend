@@ -83,7 +83,10 @@ router.get('/info', (req, res, next) => {
 
 	jwtFromToken = authToken.decodeJWT(cookie);
 
-	if (jwtFromToken.res != 'OK') return res.status(401).send( {res_code: "INVALID_TOKEN", res_data: jwtFromToken.res, res_msg: "Неверные данные авторизации"} );
+	if (jwtFromToken.res != 'OK') {
+		console.log('jwtFromToken.res',jwtFromToken.res);
+		return res.status(401).send( {res_code: "INVALID_TOKEN", res_data: jwtFromToken.res, res_msg: "Неверные данные авторизации"} );
+	}
 	console.log('decodedJWT', jwtFromToken.jwt);
 
 	let id = jwtFromToken.jwt.payload.id;
