@@ -14,20 +14,24 @@ module.exports = (app) => {
 };
 
 router.post('/register', (req, res, next) => {
+
+	/*
 	let login = req.body.login;
-	//if (!login) return res.status(200).send({res_code: "INVALID", res_data: "login", res_msg: "Заполните все поля"});
+	if (!login) return res.status(200).send({res_code: "INVALID", res_data: "login", res_msg: "Заполните все поля"});
 
 	let password = req.body.password;
-	//if (!password) return res.status(200).send({res_code: "INVALID", res_data: "password", res_msg: "Заполните все поля"});
+	if (!password) return res.status(200).send({res_code: "INVALID", res_data: "password", res_msg: "Заполните все поля"});
 
 	let email = req.body.email;
-	//if (!email) return res.status(200).send({res_code: "INVALID", res_data: "email", res_msg: "Заполните все поля"});
+	if (!email) return res.status(200).send({res_code: "INVALID", res_data: "email", res_msg: "Заполните все поля"});
 
 	let captcha = req.body['g-recaptcha-response'];
 	
-	//if (!captcha) {
-	//	return res.status(200).send({res_code: "INVALID", res_data: req.body, res_msg: "Заполните все поля"});
-	//} else {
+	if (!captcha) {
+		return res.status(200).send({res_code: "INVALID", res_data: req.body, res_msg: "Заполните все поля"});
+	} else {
+		*/
+		let captcha = req.body['g-recaptcha-response'];
 		reCaptcha.check(captcha, function (captchaReqErr, captchaReqRes) {
 			/*
 			if (captchaReqErr) {
