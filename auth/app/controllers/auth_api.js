@@ -33,14 +33,12 @@ router.post('/register', (req, res, next) => {
 		*/
 		let captcha = req.body['g-recaptcha-response'];
 		reCaptcha.check(captcha, function (captchaReqErr, captchaReqRes) {
-			/*
 			if (captchaReqErr) {
 				return res.status(200).send({res_code: "CAPTCHA_ERROR", res_data: captchaReqErr, res_msg: "Произошла ошибка во время проверки reCaptcha"} );
 			} else if (!captchaReqRes.success) {
 				console.log(captchaReqRes);
 				return res.status(200).send({res_code: "CAPTCHA_INVALID", res_data: captchaReqRes, res_msg: "reCaptcha не прошла проверку"} );
 			}
-			*/
 
 			db.Account.createAccount(login, password, email, function (err, account) {
 				console.log(err);
