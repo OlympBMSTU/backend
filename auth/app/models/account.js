@@ -9,6 +9,7 @@ module.exports = (sequelize, DataTypes) => {
 	const Account = sequelize.define('Account', {
 		login: { type: DataTypes.STRING, unique: true },
 		password: { type: DataTypes.STRING },
+		fio: { type: DataTypes.STRING },
 		email: { type: DataTypes.STRING, unique: true },
 		type: { type: DataTypes.INTEGER, defaultValue: 0 },
 		isFull: { type: DataTypes.BOOLEAN, defaultValue: false },
@@ -18,10 +19,11 @@ module.exports = (sequelize, DataTypes) => {
 		return crypto.createHmac('sha256', hashSecret).update(password).digest("hex");
 	}
 	
-	Account.createAccount = function (login, password, email, callback) {
+	Account.createAccount = function (login, password, fio, email, callback) {
     let phash = Account.hashedPassword(password);
 		this.create({
 			login: login, 
+			fio: fio,
 			email: email, 
 			password: phash, 
 			type: 0,
@@ -54,7 +56,7 @@ module.exports = (sequelize, DataTypes) => {
 	Account.getInfo = function (id, callback) {
 		this.findById(id,
 			{
-				attributes: ['login','email','type'],
+				attributes: ['fio','email','type'],
 				rejectOnEmpty: true
 			}
 		).then((account) => {

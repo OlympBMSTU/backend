@@ -21,13 +21,16 @@ router.post('/register', (req, res, next) => {
 	let password = req.body.password;
 	if (!password) return res.status(200).send({res_code: "INVALID", res_data: "password", res_msg: "Заполните все поля"});
 
+	let fio = req.body.fio;
+	if (!fio) return res.status(200).send({res_code: "INVALID", res_data: "fio", res_msg: "Заполните все поля"});
+
 	let email = req.body.email;
 	if (!email) return res.status(200).send({res_code: "INVALID", res_data: "email", res_msg: "Заполните все поля"});
 
 	let captcha = req.body['g-recaptcha-response'];
 	
 	if (!captcha) {
-		return res.status(200).send({res_code: "INVALID", res_data: req.body, res_msg: "Заполните все поля"});
+		return res.status(200).send({res_code: "INVALID", res_data: "captcha", res_msg: "Заполните все поля"});
 	} else {
 		reCaptcha.check(captcha, function (captchaReqErr, captchaReqRes) {
 			if (captchaReqErr) {
@@ -37,7 +40,7 @@ router.post('/register', (req, res, next) => {
 				return res.status(200).send({res_code: "CAPTCHA_INVALID", res_data: captchaReqRes, res_msg: "reCaptcha не прошла проверку"} );
 			}
 
-			db.Account.createAccount(login, password, email, function (err, account) {
+			db.Account.createAccount(login, password, fio, email, function (err, account) {
 				console.log(err);
 				if (!err) {
 					return res.status(200).send({res_code: "OK", res_data: login, res_msg: "Вы успешно зарегистрированны"} );
@@ -99,88 +102,6 @@ router.get('/info', (req, res, next) => {
 			return res.status(200).send( {res_code: "NOT_FOUND", res_data: "", res_msg: "Пользователь с таким логином не найден"} );
 		} else {
 			return res.status(500).send( {res_code: "INTERNAL_ERROR", res_data: "", res_msg: "Произошла внутренняя ошибка"} );
-		}
-	});
-});
-
-router.post('/findtokenbyid', (req, res, next) => {
-	console.log('***\n\n' + new Date() + ':\n' + 'Got request for authenticate');
-	
-	let data = req.body.data;
-	db.UIToken.findTokenById(data, function (tokenErr, token) {
-		if (tokenErr) {
-			return res.status(500).send({error: "Service unavailable", ex: tokenErr});
-		} else {
-			return res.status(200).send({token: token});
-		}
-	});
-});
-
-router.post('/findtokenbytoken', (req, res, next) => {
-	console.log('***\n\n' + new Date() + ':\n' + 'Got request for authenticate');
-	
-	let data = req.body.data;
-	db.UIToken.findToken(data, function (tokenErr, token) {
-		if (tokenErr) {
-			return res.status(500).send({error: "Service unavailable", ex: tokenErr});
-		} else {
-			return res.status(200).send({token: token});
-		}
-	});
-});
-
-router.post('/calctoken', (req, res, next) => {
-	console.log('***\n\n' + new Date() + ':\n' + 'Got request for authenticate');
-	
-	let data = Date.now().toString();
-	let token =  crypto.createHmac('sha256', 'hashSecret').update(data).digest("hex");
-
-	return res.status(200).send({token: token});
-});
-
-router.post('/return', (req, res, next) => {
-	console.log('***\n\n' + new Date() + ':\n' + 'Got request for authenticate');
-	
-	let token = 'arnold';
-
-	return res.status(200).send({token: token});
-});
-
-router.post('/check/:id', (req, res, next) => {
-	console.log('***\n\n' + new Date() + ':\n' + 'Got request for token check for '+req.params.id);
-	
-	let userId = req.params.id;
-	if (typeof(userId) == 'undefined') return res.status(400).send({error: "userId not specified", errCode:400});
-	
-	let token = req.body.token;
-	if (typeof(token) == 'undefined') return res.status(400).send({error: "token not specified", errCode:400});
-	
-	console.log('TokBeforeCheck:' + token +'|');
-	db.UIToken.findToken(token, function (err, dbToken) {
-		if (err) {
-			if (err == 'SequelizeEmptyResultError') {
-				console.log('tnf');
-				return res.status(200).send({error: "TokenNotFound", errCode:401});
-			} else {
-				console.log("dbErr:"+err);
-				return res.status(500).send({error: "Service unavailable", errCode:500});
-			}
-		} else {
-			if (dbToken.userId != userId) {
-				console.log('tau');
-				return res.status(200).send({error: "Trying affect another user", errCode:403});
-			} else if ((Date.now() - dbToken.created)/1000 > tokenLiveTime) {
-				console.log('ttl');
-				return res.status(200).send({error: 'TokenTTL', errCode:401});
-			} else if ((Date.now() - dbToken.lastUsed)/1000 > inactiveTokenLiveTime) {
-				console.log('til');
-				return res.status(200).send({error: 'TokenInactive', errCode:401});
-			} else {
-				db.UIToken.updateLastUsed(token, function (err, data) {
-					console.log('good');
-					return res.status(200).send({result: 1});
-				});
-			}
 		}
 	});
 });
