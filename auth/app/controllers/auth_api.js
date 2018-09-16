@@ -31,7 +31,6 @@ router.post('/register', (req, res, next) => {
 		return res.status(200).send({res_code: "INVALID", res_data: req.body, res_msg: "Заполните все поля"});
 	} else {
 		*/
-		let captcha = req.body['g-recaptcha-response'];
 		reCaptcha.check(captcha, function (captchaReqErr, captchaReqRes) {
 			if (captchaReqErr) {
 				return res.status(200).send({res_code: "CAPTCHA_ERROR", res_data: captchaReqErr, res_msg: "Произошла ошибка во время проверки reCaptcha"} );
