@@ -15,7 +15,6 @@ module.exports = (app) => {
 
 router.post('/register', (req, res, next) => {
 	let login = req.body.login;
-	
 	//if (!login) return res.status(200).send({res_code: "INVALID", res_data: "login", res_msg: "Заполните все поля"});
 
 	let password = req.body.password;
@@ -23,7 +22,7 @@ router.post('/register', (req, res, next) => {
 
 	let email = req.body.email;
 	//if (!email) return res.status(200).send({res_code: "INVALID", res_data: "email", res_msg: "Заполните все поля"});
-	console.log('In ', login, password, email);
+
 	let captcha = req.body['g-recaptcha-response'];
 	
 	//if (!captcha) {
